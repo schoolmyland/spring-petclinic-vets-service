@@ -1,0 +1,9 @@
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/system/VetsProperties.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/DiscoveryConfig.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/Specialty.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/web/VetResource.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/VetRepository.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/Vet.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/VetsServiceApplication.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/security/InsecurityConfiguration.java
+/home/pet-clinic/split-service/spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/system/CacheConfig.java
