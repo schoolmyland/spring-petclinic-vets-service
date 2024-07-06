@@ -11,7 +11,6 @@ pipeline {
                 script {
                     VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
                     env.DOCKER_TAG = "${VERSION_MAJEUR}.v.${BUILD_ID}"
-                    sh ' echo $JMETER_HOME '
                 }
             }
         }
@@ -57,7 +56,7 @@ pipeline {
                 sh '''
                 date >> /opt/custom/test/jmeter-commit-version.log
                 echo "$DOCKER_IMAGE:$DOCKER_TAG" >> /opt/custom/test/jmeter-commit-version.log
-                jmeter -n -t /opt/custom/test/petclinic_test_plan.jmx -l /opt/custom/test/petclinic_result_test.jtl
+                /opt/apache-jmeter/bin/jmeter -n -t /opt/custom/test/petclinic_test_plan.jmx -l /opt/custom/test/petclinic_result_test.jtl
                 '''
             }
         }
