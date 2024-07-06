@@ -71,8 +71,8 @@ pipeline {
                                            wait: true, 
                                            propagate: false,
                                            parameters: [
-                                               string(name: 'BUILD_DISPLAY_NAME', value: displayName),
-                                               string(name: 'BUILD_DESCRIPTION', value: description)
+                                               string(name: 'NEW_DISPLAY_NAME', value: displayName),
+                                               string(name: 'NEW_DESCRIPTION', value: description)
                                            ]
                 }
             }
