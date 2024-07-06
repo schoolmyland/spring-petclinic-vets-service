@@ -69,7 +69,7 @@ pipeline {
 
                     def buildResult = build job: 'jmeter-perf-central', 
                                            wait: true, 
-                                           propagate: false,
+                                           propagate: false
 
                     def jobUrl = buildResult.getAbsoluteUrl()
                     def buildUrl = "${jobUrl}${buildResult.getNumber()}/"
