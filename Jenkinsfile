@@ -70,10 +70,17 @@ pipeline {
                     def buildResult = build job: 'jmeter-perf-central', 
                                            wait: true, 
                                            propagate: false,
-                                           parameters: [
-                                               string(name: 'NEW_DISPLAY_NAME', value: displayName),
-                                               string(name: 'NEW_DESCRIPTION', value: description)
-                                           ]
+
+                    def jobUrl = buildResult.getAbsoluteUrl()
+                    def buildUrl = "${jobUrl}${buildResult.getNumber()}/"
+
+                    echo "Job URL: ${jobUrl}"
+                    echo "Build URL: ${buildUrl}"
+                    
+                    sh """
+                    curl -X POST -u ${API_TOKEN}: '${jobUrl}configSubmit' --data "_.displayName=${displayName}"
+                    curl -X POST -u ${API_TOKEN}: '${jobUrl}submitDescription' --data "description=${description}"
+                    """
                 }
             }
         }
