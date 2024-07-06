@@ -52,6 +52,9 @@ pipeline {
             }
         }
         stage('Test Performance Jmeter') {
+            environment {
+               withEnv(['JMETER_HOME'])
+            }
             steps {
                 sh '''
                 date >> /opt/custom/test/jmeter-commit-version.log
