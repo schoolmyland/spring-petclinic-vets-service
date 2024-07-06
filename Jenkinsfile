@@ -2,6 +2,7 @@ pipeline {
     environment {
         DOCKER_ID = "poissonchat13"
         DOCKER_IMAGE = "spring-petclinic-vets-service"
+        JMETER_TAG = "vets"
     }
     agent any
 
@@ -10,7 +11,7 @@ pipeline {
             steps {
                 script {
                     VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
-                    env.DOCKER_TAG = "${VERSION_MAJEUR}.v.${BUILD_ID}"
+                    env.DOCKER_TAG = "${VERSION_MAJEUR}.${BUILD_ID}"
                 }
             }
         }
@@ -58,6 +59,22 @@ pipeline {
                 echo "$DOCKER_IMAGE:$DOCKER_TAG" >> /opt/custom/test/jmeter-commit-version.log
                 /opt/apache-jmeter/bin/jmeter -n -t /opt/custom/test/petclinic_test_plan.jmx -l /opt/custom/test/petclinic_result_test.jtl
                 '''
+            }
+        }
+        stage('Build Jmeter pour report') {
+            steps {
+                script {
+                    def displayName = "${JMETER_TAG}-${DOCKER_TAG}"
+                    def description = "Build trigger by the job ${JOB_NAME}  On the microservice ${DOCKER_IMAGE} "
+
+                    def buildResult = build job: 'Spring-PetClinic/test jmeter', 
+                                           wait: true, 
+                                           propagate: false,
+                                           parameters: [
+                                               string(name: 'BUILD_DISPLAY_NAME', value: displayName),
+                                               string(name: 'BUILD_DESCRIPTION', value: description)
+                                           ]
+                }
             }
         }
         stage('Demontage Env Dev') {
