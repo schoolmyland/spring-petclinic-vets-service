@@ -9,7 +9,7 @@ pipeline {
         stage('Recuperation de la version Majeur') {
             steps {
                 script {
-                    VERSION_MAJEUR = sh(script: 'head -n 1 ./README.md', returnStdout: true).trim()
+                    VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
                     env.DOCKER_TAG = "${VERSION_MAJEUR}.v.${BUILD_ID}"
                 }
             }
