@@ -76,8 +76,8 @@ pipeline {
                     echo "Job URL: ${jobUrl}"
                     
                     sh """
-                    curl -X POST -u ${API_TOKEN}: '${jobUrl}configSubmit' --data "_.displayName=${displayName}"
-                    curl -X POST -u ${API_TOKEN}: '${jobUrl}submitDescription' --data "description=${description}"
+                    curl -X POST -u ${API_TOKEN} '${jobUrl}configSubmit' --data "_.displayName=${displayName}"
+                    curl -X POST -u ${API_TOKEN} '${jobUrl}submitDescription' --data "description=${description}"
                     """
                 }
             }
