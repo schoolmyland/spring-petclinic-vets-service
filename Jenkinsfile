@@ -72,10 +72,8 @@ pipeline {
                                            propagate: false
 
                     def jobUrl = buildResult.getAbsoluteUrl()
-                    def buildUrl = "${jobUrl}${buildResult.getNumber()}/"
 
                     echo "Job URL: ${jobUrl}"
-                    echo "Build URL: ${buildUrl}"
                     
                     sh """
                     curl -X POST -u ${API_TOKEN}: '${jobUrl}configSubmit' --data "_.displayName=${displayName}"
