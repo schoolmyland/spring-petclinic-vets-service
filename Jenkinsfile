@@ -21,9 +21,6 @@ pipeline {
             }
         }
         stage('Docker Build Dev') {
-            environment {
-                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
-            }
             steps {
                 sh '''
                 docker build -t localhost:5000/$DOCKER_IMAGE:latest-dev .
@@ -62,6 +59,9 @@ pipeline {
             }
         }
         stage('Build Jmeter pour report') {
+            environment {
+                API_TOKEN = credentials("API_TOKEN")
+            }
             steps {
                 script {
                     def displayName = "${JMETER_TAG}-${DOCKER_TAG}"
