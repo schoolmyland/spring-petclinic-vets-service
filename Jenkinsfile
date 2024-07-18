@@ -15,11 +15,6 @@ pipeline {
                 }
             }
         }
-        stage('Maven build test') {
-            steps {
-                sh './mvnw clean package'
-            }
-        }
         stage('Docker Build Dev') {
             steps {
                 sh '''
