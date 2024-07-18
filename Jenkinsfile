@@ -87,7 +87,7 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                helm uninstall app 
+                helm petclinic-dev app 
                 '''
             }
         }
