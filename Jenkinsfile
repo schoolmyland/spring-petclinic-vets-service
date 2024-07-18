@@ -35,6 +35,7 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
+                kubectl config use-context kind-kind
                 helm install petclinic-dev spring-pet-clinic-litecloud --values=./spring-pet-clinic-litecloud/value.yaml --set $JMETER_TAG.repo=local-img --set $JMETER_TAG.pull=Never 
                 sleep 120 
                 '''
