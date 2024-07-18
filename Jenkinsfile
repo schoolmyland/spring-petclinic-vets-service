@@ -18,8 +18,8 @@ pipeline {
         stage('Docker Build Dev') {
             steps {
                 sh '''
-                docker build -t localhost:5000/$DOCKER_IMAGE:latest-dev .
-                sleep 10
+                docker build -t local-img/$DOCKER_IMAGE:latest .
+                kind load docker-image local-img/$DOCKER_IMAGE:latest
                 '''
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                helm upgrade --install app spring-pet-clinic-litecloud --values=./spring-pet-clinic-litecloud/value.yaml
+                helm install petclinic-dev spring-pet-clinic-litecloud --values=./spring-pet-clinic-litecloud/value.yaml --set $JMETER_TAG.repo=local-img --set $JMETER_TAG.pull=Never 
                 sleep 120 
                 '''
             }
@@ -98,7 +98,7 @@ pipeline {
             steps {
                 sh '''
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
-                docker tag localhost:5000/$DOCKER_IMAGE:latest-dev $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                docker tag local-img/$DOCKER_IMAGE:latest $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
                 docker tag $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE:latest
                 docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
                 docker push $DOCKER_ID/$DOCKER_IMAGE:latest
