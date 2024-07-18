@@ -29,6 +29,7 @@ pipeline {
             }
             steps {
                 sh '''
+                kubectl config use-context kind-kind
                 cp -r /opt/helm/* ./
                 rm -Rf .kube
                 mkdir .kube
@@ -87,7 +88,8 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                helm uninstall petclinic-dev 
+                helm uninstall petclinic-dev
+                kubectl config use-context default
                 '''
             }
         }
