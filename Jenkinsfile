@@ -49,8 +49,7 @@ pipeline {
         stage('Test Performance Jmeter') {
             steps {
                 sh '''
-                date >> $JENK_TOOLBOX/test/jmeter-commit-version.log
-                echo "$DOCKER_IMAGE:$DOCKER_TAG $(date +"%Y-%m-%d-%H-%M")" >> $JENK_TOOLBOX/log/jmeter-commit-version.log
+                echo "$DOCKER_IMAGE:$DOCKER_TAG $(date +"%Y-%m-%d-%H-%M")" >> $JENK_TOOLBOX/logs/jmeter-commit-version.log
                 $JENK_TOOLBOX/apache-jmeter/bin/jmeter -n -t $JENK_TOOLBOX/test/petclinic_test_plan.jmx -l $JENK_TOOLBOX/test/petclinic_result_test.jtl
                 '''
             }
