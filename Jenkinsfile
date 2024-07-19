@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 sh '''
-                cp -r ${JENK_TOOLBOX}helm/* ./
+                cp -r ${JENK_TOOLBOX}/helm/* ./
                 rm -Rf .kube
                 mkdir .kube
                 ls
