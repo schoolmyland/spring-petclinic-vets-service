@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Deploiement Developpement') {
             environment {
-                KUBECONFIG = credentials("config")
+                KUBECONFIG = credentials("confkub")
             }
             steps {
                 sh '''
@@ -81,7 +81,7 @@ pipeline {
         }
         stage('Demontage Env Dev') {
             environment {
-                KUBECONFIG = credentials("config")
+                KUBECONFIG = credentials("confkub")
             }
             steps {
                 sh '''
