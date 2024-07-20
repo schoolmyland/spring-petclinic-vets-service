@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 sh '''
-                $JENK_TOOLBOX/ctrl/checkNamespaceUse.sh
+                $JENK_TOOLBOX/ctrl/checkNamespaceUse.sh developpement
                 cp -r ${JENK_TOOLBOX}/helm/* ./
                 rm -Rf .kube
                 mkdir .kube
@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Test Acceptance') {
             steps {
-                sh '$JENK_TOOLBOX/ctrl/checkpod.sh'
+                sh '$JENK_TOOLBOX/ctrl/checkpod.sh developpement' 
             }
         }
         stage('Test Performance Jmeter') {
