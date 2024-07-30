@@ -109,7 +109,6 @@ pipeline {
         }
         stage('Mise en Production') {
             environment {
-                KUBECONFIG = credentials("confkub")
                 CLUSTERNAME = credentials("cluster")
             }
             steps {
@@ -120,10 +119,6 @@ pipeline {
                   secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
                   sh '''
-                  rm -Rf .kube
-                  mkdir .kube
-                  ls
-                  cat $KUBECONFIG > .kube/config
                   $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME vets-service
                   '''
                 }
