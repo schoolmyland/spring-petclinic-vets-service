@@ -124,7 +124,7 @@ pipeline {
                   mkdir .kube
                   ls
                   cat $KUBECONFIG > .kube/config
-                  $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME
+                  $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME vets-service
                   '''
                 }
             }
