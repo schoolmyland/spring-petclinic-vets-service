@@ -79,6 +79,20 @@ pipeline {
                 }
             }
         }
+        stage('Push Image pour prod') {
+            environment {
+                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+            }
+            steps {
+                sh '''
+                docker login -u $DOCKER_ID -p $DOCKER_PASS
+                docker tag localhost:5000/$DOCKER_IMAGE:latest $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                docker tag $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE:latest
+                docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                docker push $DOCKER_ID/$DOCKER_IMAGE:latest
+                '''
+            }
+        }
         stage('Demontage Env Dev') {
             environment {
                 KUBECONFIG = credentials("confkub")
@@ -93,18 +107,26 @@ pipeline {
                 '''
             }
         }
-        stage('Push Image pour prod') {
+        stage('Mise en Production') {
             environment {
-                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+                KUBECONFIG = credentials("confkub")
+                CLUSTERNAME = credentials("cluster")
             }
             steps {
-                sh '''
-                docker login -u $DOCKER_ID -p $DOCKER_PASS
-                docker tag localhost:5000/$DOCKER_IMAGE:latest $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
-                docker tag $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE:latest
-                docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
-                docker push $DOCKER_ID/$DOCKER_IMAGE:latest
-                '''
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                  credentialsId: "kube-admin",
+                  accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                  secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                  sh '''
+                  rm -Rf .kube
+                  mkdir .kube
+                  ls
+                  cat $KUBECONFIG > .kube/config
+                  $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME
+                  '''
+                }
             }
         }
     }
