@@ -1,18 +1,20 @@
 pipeline {
     environment {
-        DOCKER_ID = "poissonchat13"
-        DOCKER_IMAGE = "spring-petclinic-vets-service"
-        JMETER_TAG = "vets"
         JENK_TOOLBOX = "/opt/jenkins"
     }
     agent any
-
     stages {
         stage('Recuperation de la version Majeur') {
             steps {
                 script {
                     VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
                     env.DOCKER_TAG = "${VERSION_MAJEUR}.${BUILD_ID}"
+                    def jobName = env.JOB_NAME
+                    def splitParts = jobName.split('_')
+                    def prefix = "spring-petclinic-"
+                    env.JMETER_TAG = splitParts[0]
+                    env.DOCKER_IMAGE = splitParts[1]
+                    env.SERVICE_NAME =  env.DOCKER_IMAGE.replaceFirst(prefix, '')
                 }
             }
         }
@@ -44,7 +46,14 @@ pipeline {
         }
         stage('Test Acceptance') {
             steps {
-                sh '$JENK_TOOLBOX/ctrl/checkpod.sh developpement' 
+                script {
+                sh '$JENK_TOOLBOX/ctrl/checkpod.sh developpement'
+                }
+            }
+            post {
+                failure {
+                    sh 'helm uninstall petclinic-dev'
+                }
             }
         }
         stage('Test Performance Jmeter') {
@@ -81,6 +90,7 @@ pipeline {
         }
         stage('Push Image pour prod') {
             environment {
+                DOCKER_ID = credentials("DOCKER_HUB_ID")
                 DOCKER_PASS = credentials("DOCKER_HUB_PASS")
             }
             steps {
@@ -119,7 +129,7 @@ pipeline {
                   secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
                   sh '''
-                  $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME vets-service
+                  $JENK_TOOLBOX/ctrl/updatePod.sh $CLUSTERNAME $SERVICE_NAME
                   '''
                 }
             }
