@@ -9,7 +9,9 @@ pipeline {
                 script {
                     VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
                     env.DOCKER_TAG = "${VERSION_MAJEUR}.${BUILD_ID}"
-                    def jobName = env.JOB_NAME
+                    def jobDirName = env.JOB_NAME
+                    def splitDir = jobDirName.split('/') 
+                    def jobName = splitDir[1]
                     def splitParts = jobName.split('_')
                     def prefix = "spring-petclinic-"
                     env.JMETER_TAG = splitParts[0]
