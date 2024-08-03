@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'main'
-    }
+    agent any
     stages {
         stage('Recuperation de la version Majeur') {
             steps {
