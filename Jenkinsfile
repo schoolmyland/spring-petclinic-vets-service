@@ -72,7 +72,7 @@ pipeline {
             }
             steps {
                 script {
-                    def displayName = "${JMETER_TAG}-${DOCKER_TAG}"
+                    def displayName = "${JMETER_TAG}${DOCKER_TAG}"
                     def description = "Build trigger by the job ${JOB_NAME}  On the microservice ${DOCKER_IMAGE} "
 
                     def buildResult = build job: 'jmeter-perf-central', 
