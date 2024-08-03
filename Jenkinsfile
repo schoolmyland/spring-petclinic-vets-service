@@ -1,8 +1,7 @@
 pipeline {
-    environment {
-        JENK_TOOLBOX = "/opt/jenkins"
+    agent {
+        label 'main'
     }
-    agent any
     stages {
         stage('Recuperation de la version Majeur') {
             steps {
