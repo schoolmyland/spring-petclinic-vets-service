@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Recuperation de la version Majeur') {
+        stage('Mise en place des variables') {
             steps {
                 script {
                     VERSION_MAJEUR = sh(script: 'head -n 5 ./README.md | tail -n 1', returnStdout: true).trim()
@@ -43,7 +43,7 @@ pipeline {
                 '''
             }
         }
-        stage('Test Acceptance') {
+        stage('Test des pods') {
             steps {
                 script {
                 sh '$JENK_TOOLBOX/ctrl/checkpod.sh developpement'
